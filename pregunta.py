@@ -11,6 +11,12 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+def getFecha(x):
+    try:
+        return datetime.strptime(x, '%d/%m/%Y')
+    except:
+        return datetime.strptime(x, '%Y/%m/%d') 
+
 def clean_data():
 
     df = pd.read_csv("solicitudes_credito.csv", sep=";")
@@ -39,7 +45,7 @@ def clean_data():
     df['barrio'] = df['barrio'].str.lower()
     df['barrio'] = df['barrio'].map(lambda x: x.replace("-",' '))
     df['barrio'] = df['barrio'].map(lambda x: x.replace("_",' '))
-    df['fecha_de_beneficio'] = df['fecha_de_beneficio'].apply(lambda x: datetime.strptime(x, '%d/%m/%Y'))
+    df['fecha_de_beneficio'] = df['fecha_de_beneficio'].apply(lambda x: getFecha(x))
     df['fecha_de_beneficio'] = df['fecha_de_beneficio'].dt.strftime('%d/%m/%Y')
     df['línea_credito'] = df['línea_credito'].str.lower()
     df['línea_credito'] = df['línea_credito'].map(lambda x: x.replace(" ",'_'))
